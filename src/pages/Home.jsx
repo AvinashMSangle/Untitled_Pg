@@ -1,16 +1,20 @@
-import Header from "./components/Header";
-import Aside from "./components/Aside";
-import Form from "./components/Form";
+import Header from "@/components/Header";
+import Aside from "@/components/Aside";
+import Form from "@/components/Form";
 
 function Home() {
   return (
-    <div>
-      <h1 className="text-5xl font-bold text-red-500 hover:text-blue-300">
-        Hii
-      </h1>
+    <div className=" min-h-screen w-full bg-zinc-50 px-4 py-2 md:px-8 md:py-4">
+     
       <Header />
+      <div className="grid grid-cols-8">
+        <div className="col-span-2 hidden bg-red-100 md:block">
       <Aside />
+      </div>
+      <div className="col-span-6 bg-green-100 md:col-span-6">
       <Form />
+      </div>
+      </div>
     </div>
   );
 }
