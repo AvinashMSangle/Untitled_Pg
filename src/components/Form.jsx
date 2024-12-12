@@ -22,7 +22,7 @@ function Form() {
 
 
   const handleSubmit = (e) => {
-    console.log(formData);
+    console.log(selectedservices);
     e.preventDefault();
   };
 
@@ -33,13 +33,11 @@ function Form() {
   const [selectedservices, setSelectedServices] = useState([]);
 
   const handleCheckbox = (value, checked) => {
-    if (checked) {
-      console.log(`Theek hai mein ${value} ko add kar dunga`);
-      return;
-    }
-
-    console.log(`Theek hai mein ${value} ko remove kar dunga`);
-  };
+   setSelectedServices((prevState)=>{
+   return updatedServices = [...prevState,value];
+    
+   })
+   };
 
   return (
     <>
@@ -101,9 +99,8 @@ function Form() {
         <button
           type="submit"
           className="flex justify-center gap-2 rounded-lg bg-stone-950 p-2 text-white"
-          onChange={(e) => handleClick(e)}
-        
-          
+
+                 
         >
           Let's get started
           <TbFlareFilled size={20} className="text-lime-500" />
