@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { TbFlareFilled } from "react-icons/tb";
 import Intro from "@/components/Intro";
@@ -13,13 +14,23 @@ const services = [
 ];
 
 function Form() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const handleFormSubmit = (data) => {                                                                      
+  const handleFormSubmit = async (data) => {
+    const res = await fetch("https://vector.profanity.dev", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: data.meassage }),
+    });
+    const resData = await res.json();
+    if (resData.isProfanity)
+      return navigate("/error", { state: { badWord: resData.flaggedFor } });
+
     const formData = new FormData();
     formData.append(utils.fullname, data.fullname);
     formData.append(utils.email, data.email);
@@ -27,11 +38,15 @@ function Form() {
     formData.append(utils.services, data.services);
     fetch(utils.submitUrl, {
       method: "POST",
-      mode:"no-cors",
+      mode: "no-cors",
       body: formData,
-    }).then(()=>{
-      console.log("successfull",utils.entriesUrl)
-    })
+    }).then(() => {
+      navigate("/submission", {
+        state: {
+          name: data.fullname,
+        },
+      });
+    });
   };
 
   return (
@@ -69,15 +84,20 @@ function Form() {
 
         <input
           type="text"
-          {...register("message", { required: "Please enter a message" ,
-            pattern:{
-              value: /^[a-zA-Z0-9\s]{1,}$/, 
-              message: "Please enter a valid message"} })}
+          {...register("message", {
+            required: "Please enter a message",
+            pattern: {
+              value: /^[a-zA-Z0-9\s]{1,}$/,
+              message: "Please enter a valid message",
+            },
+          })}
           id="message"
           placeholder="Tell us a bit about your project..."
           className="h-24 border-b border-stone-700 bg-zinc-50 p-2 placeholder-slate-700 md:bg-lime-400"
         />
-        {errors.message&&<p className="text-red-500">{errors.message.message}</p>}
+        {errors.message && (
+          <p className="text-red-500">{errors.message.message}</p>
+        )}
 
         <p className="my-5 text-zinc-800">How can we help?</p>
 
@@ -91,9 +111,9 @@ function Form() {
               >
                 <input
                   type="checkbox"
-                  {...register("services",{required:"Atleast Select One Service"})}
-
-                
+                  {...register("services", {
+                    required: "Atleast Select One Service",
+                  })}
                   value={service}
                   className="size-6"
                 />
@@ -102,7 +122,9 @@ function Form() {
             );
           })}
 
-          {errors.services&&<p className="text-red-500">{errors.services.message}</p>}
+          {errors.services && (
+            <p className="text-red-500">{errors.services.message}</p>
+          )}
         </section>
         <button
           type="submit"
