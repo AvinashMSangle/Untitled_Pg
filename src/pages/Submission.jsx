@@ -1,10 +1,10 @@
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Header from "@/components/Header";
 import utils from "@/lib/utils";
 
 function submissionPage() {
     const location = useLocation();
-    const name = location.state.name||Annonymus;
+    // const name = location.state.name||Anonymous;
   return (
     <div className="min-h-screen w-full bg-zinc-50 px-4 py-2 md:px-8 md:py-4">
       <Header />
@@ -13,13 +13,13 @@ function submissionPage() {
         <h2 className="text-3xl">Success💐</h2>
         <p className="terxt-lg">
           Name Your form is Successfully submitted.Go to Chech{" "}
-          <a
-            href={utils.entriesUrl}
+          <Link
+            to={utils.entriesUrl}
             className="text-blue-600 underline"
             target="_blank"
           >
             here
-          </a>
+          </Link>
           .
         </p>
       </div>
