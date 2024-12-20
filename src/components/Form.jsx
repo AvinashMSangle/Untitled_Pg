@@ -25,7 +25,7 @@ function Form() {
     const res = await fetch("https://vector.profanity.dev", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: data.meassage }),
+      body: JSON.stringify({ message: data.message }),
     });
     const resData = await res.json();
     if (resData.isProfanity)
@@ -139,3 +139,5 @@ function Form() {
 }
 
 export default Form;
+
+
